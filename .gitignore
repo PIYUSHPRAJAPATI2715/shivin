@@ -31,3 +31,6 @@ yarn-error.log*
 .gemini/
 .agent/
 brain/
+.next/
+out/
+next-env.d.ts
