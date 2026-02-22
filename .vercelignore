@@ -1,4 +1,4 @@
-legacy/
+_legacy_backup/
 node_modules/
 .git/
 .next/
