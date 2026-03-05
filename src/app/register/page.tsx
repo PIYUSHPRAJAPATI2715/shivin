@@ -3,161 +3,193 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
-import { User, Mail, Lock, ArrowRight, Building2, Briefcase, UserRound, ShieldCheck, HardHat } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-
-const roles = [
-    { id: "customer", label: "Customer", icon: UserRound, desc: "Looking to buy or rent" },
-    { id: "agent", label: "Agent / Staff", icon: Briefcase, desc: "List & manage properties" },
-    { id: "associate", label: "Associate", icon: ShieldCheck, desc: "Strategic partnership" },
-    { id: "provider", label: "Provider", icon: HardHat, desc: "Service professional" },
-];
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
 
 export default function RegisterPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedRole, setSelectedRole] = useState("customer");
+    const [agreeToTerms, setAgreeToTerms] = useState(true);
+    const [selectedRole, setSelectedRole] = useState<string>("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!selectedRole) {
+            toast.error("Please select a role", {
+                style: { fontFamily: 'Inter, sans-serif' }
+            });
+            return;
+        }
+
+        if (!agreeToTerms) {
+            toast.error("Please agree to the terms and privacy policy", {
+                style: { fontFamily: 'Inter, sans-serif' }
+            });
+            return;
+        }
+
         setIsLoading(true);
 
+        // Simulate login logic based on Flutter routing
         setTimeout(() => {
             setIsLoading(false);
-            toast.success(`Registered successfully as ${selectedRole}!`);
-            router.push("/login");
+            toast.success("Registration successful", {
+                style: { fontFamily: 'Inter, sans-serif' }
+            });
+
+            if (selectedRole === "Agent Staff") {
+                router.push("/dashboard");
+            } else {
+                router.push("/profile");
+            }
         }, 1500);
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-20 relative overflow-hidden">
-            {/* Background patterns omitted for conciseness but implied in high-fidelity */}
+        <div className="min-h-screen bg-white" style={{ fontFamily: 'Inter, sans-serif' }}>
+            {/* App Bar Equivalent */}
+            <div className="pt-8 pb-2 px-4 shadow-sm">
+                <button
+                    onClick={() => router.back()}
+                    className="p-2 hover:bg-slate-100 rounded-full transition-colors inline-flex items-center justify-center text-[#262626]"
+                >
+                    <ArrowLeft className="w-6 h-6" />
+                </button>
+            </div>
 
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-[800px] z-10 grid grid-cols-1 lg:grid-cols-2 bg-white rounded-[3rem] shadow-2xl shadow-slate-900/10 border border-white overflow-hidden"
-            >
-                {/* Left Side: Role Selection */}
-                <div className="p-10 bg-slate-900 text-white flex flex-col justify-between">
-                    <div>
-                        <Link href="/" className="inline-flex items-center gap-2 mb-12">
-                            <div className="p-2 bg-blue-600 rounded-lg">
-                                <Building2 className="h-5 w-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold font-display tracking-tight text-white">Shiven</span>
-                        </Link>
-                        <h2 className="text-4xl font-bold mb-4 tracking-tight">Join our <br /> ecosystem.</h2>
-                        <p className="text-slate-400 text-sm mb-8 leading-relaxed">
-                            Select your membership type to get access to specialized tools and dashboards tailored for your needs.
-                        </p>
-
-                        <div className="grid grid-cols-1 gap-3">
-                            {roles.map((role) => (
-                                <button
-                                    key={role.id}
-                                    type="button"
-                                    onClick={() => setSelectedRole(role.id)}
-                                    className={cn(
-                                        "flex items-center gap-4 p-4 rounded-2xl border transition-all text-left group",
-                                        selectedRole === role.id
-                                            ? "bg-blue-600 border-blue-500 text-white"
-                                            : "bg-slate-800/50 border-slate-800 text-slate-300 hover:border-slate-700"
-                                    )}
-                                >
-                                    <div className={cn(
-                                        "p-3 rounded-xl transition-colors",
-                                        selectedRole === role.id ? "bg-white text-blue-600" : "bg-slate-800 text-slate-400 group-hover:text-white"
-                                    )}>
-                                        <role.icon className="h-5 w-5" />
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-bold tracking-tight">{role.label}</p>
-                                        <p className="text-[10px] opacity-60 font-medium">{role.desc}</p>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <p className="text-[10px] text-slate-500 mt-8 font-medium">© 2026 Shiven Excellence. Security protocol v4.2 active.</p>
-                </div>
-
-                {/* Right Side: Form */}
-                <div className="p-10 lg:p-12">
-                    <div className="mb-10">
-                        <h1 className="text-3xl font-bold text-slate-900 leading-tight">Create Identity</h1>
-                        <p className="text-slate-500 mt-2 font-medium italic">Identity level: {selectedRole.toUpperCase()}</p>
-                    </div>
-
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="space-y-2">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Authentication Name</Label>
-                            <div className="relative group">
-                                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-blue-600 transition-colors" />
-                                <Input
-                                    placeholder="Global Username"
-                                    className="pl-12 h-14 bg-slate-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500/20 rounded-2xl text-lg font-medium"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Email Interface</Label>
-                            <div className="relative group">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-blue-600 transition-colors" />
-                                <Input
-                                    type="email"
-                                    placeholder="name@nexus.com"
-                                    className="pl-12 h-14 bg-slate-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500/20 rounded-2xl text-lg font-medium"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Universal Password</Label>
-                            <div className="relative group">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-blue-600 transition-colors" />
-                                <Input
-                                    type="password"
-                                    placeholder="••••••••"
-                                    className="pl-12 h-14 bg-slate-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500/20 rounded-2xl text-lg font-medium"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <Button
-                            type="submit"
-                            disabled={isLoading}
-                            className="w-full h-15 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-xl shadow-blue-500/20 transition-all text-lg flex items-center justify-center gap-3 group mt-4"
-                        >
-                            {isLoading ? (
-                                <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                            ) : (
-                                <>
-                                    Initialize Profile
-                                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                                </>
-                            )}
-                        </Button>
-                    </form>
-
-                    <p className="text-center mt-10 text-sm text-slate-500 font-medium">
-                        Already have an identity?{" "}
-                        <Link href="/login" className="text-blue-600 font-bold hover:underline">
-                            Login Here
-                        </Link>
+            {/* Body Scroll View Equivalent */}
+            <div className="px-7 py-5 max-w-md mx-auto w-full">
+                <div className="mb-9 mt-3">
+                    <h1 className="text-[26px] font-bold text-[#1D2024] mb-1">
+                        Register Account
+                    </h1>
+                    <p className="text-[14px] text-[#9CA3AF] leading-[1.4]">
+                        Sign in with your email and password or social media to continue
                     </p>
                 </div>
-            </motion.div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Email Field */}
+                    <div className="space-y-1.5">
+                        <Label className="text-[14px] font-semibold text-[#262626]">Email</Label>
+                        <Input
+                            type="email"
+                            placeholder="example123@gmail.com"
+                            className="h-[56px] px-6 text-[14px] text-black bg-white border-[#E5E7EB] rounded-[28px] focus-visible:ring-1 focus-visible:ring-[#007BFF] focus-visible:border-[#007BFF] placeholder:text-[#D1D5DB] placeholder:text-[13px]"
+                            required
+                        />
+                    </div>
+
+                    <div className="h-0.5" />
+
+                    {/* Username Field */}
+                    <div className="space-y-1.5">
+                        <Label className="text-[14px] font-semibold text-[#262626]">Username</Label>
+                        <Input
+                            type="text"
+                            placeholder="Username"
+                            className="h-[56px] px-6 text-[14px] text-black bg-white border-[#E5E7EB] rounded-[28px] focus-visible:ring-1 focus-visible:ring-[#007BFF] focus-visible:border-[#007BFF] placeholder:text-[#D1D5DB] placeholder:text-[13px]"
+                            required
+                        />
+                    </div>
+
+                    <div className="h-0.5" />
+
+                    {/* Password Field */}
+                    <div className="space-y-1.5">
+                        <Label className="text-[14px] font-semibold text-[#262626]">Password</Label>
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            className="h-[56px] px-6 text-[14px] text-black bg-white border-[#E5E7EB] rounded-[28px] focus-visible:ring-1 focus-visible:ring-[#007BFF] focus-visible:border-[#007BFF] placeholder:text-[#D1D5DB] placeholder:text-[13px]"
+                            required
+                        />
+                    </div>
+
+                    <div className="h-0.5" />
+
+                    {/* Role Selection Dropdown */}
+                    <div className="space-y-1.5">
+                        <Label className="text-[14px] font-semibold text-[#262626]">Select Role</Label>
+                        <Select onValueChange={setSelectedRole} value={selectedRole}>
+                            <SelectTrigger className="h-[56px] px-6 text-[14px] bg-white border-[#E5E7EB] rounded-[28px] focus:ring-1 focus:ring-[#007BFF]">
+                                <SelectValue placeholder="Select a role" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl border-[#E5E7EB] bg-white">
+                                <SelectItem value="Agent Staff" className="text-[14px]">Agent Staff</SelectItem>
+                                <SelectItem value="Associate" className="text-[14px]">Associate</SelectItem>
+                                <SelectItem value="Customer" className="text-[14px]">Customer</SelectItem>
+                                <SelectItem value="Client" className="text-[14px]">Client</SelectItem>
+                                <SelectItem value="Property" className="text-[14px]">Property</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="h-1" />
+
+                    {/* Terms & Privacy Checkbox */}
+                    <div className="flex items-start mt-3 mb-8 space-x-2">
+                        <Checkbox
+                            id="agreeToTerms"
+                            checked={agreeToTerms}
+                            onCheckedChange={(checked) => setAgreeToTerms(checked as boolean)}
+                            className="w-[18px] h-[18px] mt-0.5 rounded-[4px] border-[#CBD5E1] data-[state=checked]:bg-[#007BFF] data-[state=checked]:text-white data-[state=checked]:border-[#007BFF]"
+                        />
+                        <label
+                            htmlFor="agreeToTerms"
+                            className="text-[13px] text-[#4B5563] cursor-pointer"
+                        >
+                            Agree with <b>terms</b> and <b>privacy</b>
+                        </label>
+                    </div>
+
+                    {/* Sign Up Button */}
+                    <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full h-[56px] bg-[#007BFF] hover:bg-[#0056b3] text-white text-[16px] font-semibold rounded-full shadow-[0_4px_14px_0_rgba(0,123,255,0.39)] transition-all"
+                    >
+                        {isLoading ? (
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                            "Sign up"
+                        )}
+                    </Button>
+                </form>
+
+                <div className="mt-7 text-center">
+                    <p className="text-[14px] text-[#9CA3AF]">Or</p>
+                </div>
+
+                {/* Social Media Buttons */}
+                <div className="flex justify-center gap-5 mt-5">
+                    {/* Mocking SVGs for simplicity, matching the visual weight */}
+                    <button className="w-12 h-12 bg-[#F3F4F6] rounded-full flex items-center justify-center hover:bg-[#E5E7EB] transition-colors">
+                        <span className="text-[#1877F2] font-bold text-xl">f</span>
+                    </button>
+                    <button className="w-12 h-12 bg-[#F3F4F6] rounded-full flex items-center justify-center hover:bg-[#E5E7EB] transition-colors">
+                        <span className="text-[#EA4335] font-bold text-xl">G</span>
+                    </button>
+                </div>
+
+                {/* Sign In Link */}
+                <div className="flex items-center justify-center mt-6 pb-8">
+                    <span className="text-[14px] text-[#4B5563]">Already have an account ?</span>
+                    <Link href="/login" className="text-[14px] font-bold text-[#007BFF] ml-1">
+                        Sign in
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, Heart, User, Menu, X, Search, PlusCircle } from "lucide-react";
+import { Building2, Heart, User, Menu, X, Search, PlusCircle, BookOpen, Info, Phone } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -25,7 +25,9 @@ export function Navbar() {
         { name: "Buy", href: "/properties?type=buy", icon: Search },
         { name: "Rent", href: "/properties?type=rent", icon: Building2 },
         { name: "Services", href: "/services", icon: Heart },
-        { name: "Favorites", href: "/dashboard", icon: Heart },
+        { name: "Blog", href: "/blog", icon: BookOpen },
+        { name: "About", href: "/about", icon: Info },
+        { name: "Contact", href: "/contact", icon: Phone },
     ];
 
     return (

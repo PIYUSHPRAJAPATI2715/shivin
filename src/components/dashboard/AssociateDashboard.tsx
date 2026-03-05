@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
 
 export function AssociateDashboard() {
     return (
-        <div className="space-y-12">
+        <div className="max-w-7xl mx-auto space-y-8 p-6 md:p-8">
             {/* Network Overview */}
-            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[3rem] p-12 text-white relative overflow-hidden">
+            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-xl">
                 <div className="absolute top-0 right-0 p-12 opacity-10">
                     <Network className="w-80 h-80 text-blue-400" />
                 </div>
@@ -19,9 +19,9 @@ export function AssociateDashboard() {
                             <Handshake className="h-4 w-4" />
                             <span className="text-[10px] font-black uppercase tracking-widest">Global Associate Elite</span>
                         </div>
-                        <h2 className="text-5xl font-black tracking-tighter italic">NEXUS <span className="text-blue-500 not-italic">NETWORK</span></h2>
-                        <p className="text-slate-400 text-lg leading-relaxed max-w-md">You are among the top 5% of strategic associates. Your network has generated $4.2M in volume this quarter.</p>
-                        <Button className="h-14 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-2xl shadow-blue-500/20">
+                        <h2 className="text-4xl md:text-5xl font-black tracking-tighter italic">NEXUS <span className="text-blue-500 not-italic">NETWORK</span></h2>
+                        <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-md">You are among the top 5% of strategic associates. Your network has generated $4.2M in volume this quarter.</p>
+                        <Button className="h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20">
                             Expand Network <Zap className="ml-2 h-4 w-4 fill-white" />
                         </Button>
                     </div>
@@ -32,51 +32,53 @@ export function AssociateDashboard() {
                             { label: "Rank", val: "Platinum", icon: Award },
                             { label: "Trust Score", val: "99.8", icon: ShieldCheck }
                         ].map((stat, i) => (
-                            <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-3xl">
-                                <stat.icon className="h-5 w-5 text-blue-400 mb-4" />
+                            <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-colors">
+                                <stat.icon className="h-5 w-5 text-blue-400 mb-3" />
                                 <p className="text-2xl font-black tracking-tight">{stat.val}</p>
-                                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{stat.label}</p>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{stat.label}</p>
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Lead Pipeline */}
-                <div className="space-y-8">
-                    <h3 className="text-2xl font-bold text-slate-900">Affiliate Pipeline</h3>
+                <div className="space-y-6">
+                    <h3 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">Affiliate Pipeline</h3>
                     <div className="space-y-4">
                         <PipelineRow name="Luxe Ventures" type="Corporate" volume="$1.2M" status="Streaming" color="blue" />
                         <PipelineRow name="Prime Estates" type="Brokerage" volume="$850K" status="Ready" color="emerald" />
                         <PipelineRow name="Horizon Capital" type="Investment" volume="$2.1M" status="Negotiating" color="amber" />
                     </div>
-                    <Button variant="outline" className="w-full h-14 border-slate-100 text-slate-900 font-bold rounded-2xl">Manage All Affiliates</Button>
+                    <Button variant="outline" className="w-full h-12 border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50">Manage All Affiliates</Button>
                 </div>
 
                 {/* Opportunity Alerts */}
-                <div className="space-y-8">
-                    <h3 className="text-2xl font-bold text-slate-900">Global Opportunities</h3>
-                    <div className="bg-white rounded-[3rem] border border-slate-100 p-10 space-y-8 shadow-2xl shadow-slate-900/5">
-                        {[
-                            { title: "Commercial Hub Expansion", city: "London, UK", bounty: "2.5% Bonus", tag: "High Priority" },
-                            { title: "Beachfront Portfolio", city: "Dubai, UAE", bounty: "Exclusive Rights", tag: "Limited" }
-                        ].map((opp, i) => (
-                            <div key={i} className="flex items-center justify-between group cursor-pointer pb-6 border-b border-slate-50 last:border-0 last:pb-0">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em]">{opp.tag}</span>
-                                        <div className="h-1 w-1 rounded-full bg-slate-300" />
-                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{opp.city}</span>
+                <div className="space-y-6">
+                    <h3 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">Global Opportunities</h3>
+                    <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-sm">
+                        <div className="space-y-6">
+                            {[
+                                { title: "Commercial Hub Expansion", city: "London, UK", bounty: "2.5% Bonus", tag: "High Priority", color: "text-blue-600", bg: "bg-blue-50" },
+                                { title: "Beachfront Portfolio", city: "Dubai, UAE", bounty: "Exclusive Rights", tag: "Limited", color: "text-purple-600", bg: "bg-purple-50" }
+                            ].map((opp, i) => (
+                                <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between group cursor-pointer pb-6 border-b border-slate-50 last:border-0 last:pb-0 gap-4">
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2">
+                                            <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded", opp.bg, opp.color)}>{opp.tag}</span>
+                                            <div className="h-1 w-1 rounded-full bg-slate-300" />
+                                            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{opp.city}</span>
+                                        </div>
+                                        <h4 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{opp.title}</h4>
                                     </div>
-                                    <h4 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{opp.title}</h4>
-                                    <p className="text-xs font-bold text-amber-600">{opp.bounty}</p>
+                                    <div className="text-left sm:text-right shrink-0">
+                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Bounty</p>
+                                        <p className="text-sm font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-lg inline-block">{opp.bounty}</p>
+                                    </div>
                                 </div>
-                                <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                                    <ArrowUpRight className="h-5 w-5" />
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,17 +94,17 @@ function PipelineRow({ name, type, volume, status, color }: any) {
     };
 
     return (
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 flex items-center justify-between hover:shadow-xl hover:shadow-slate-900/5 transition-all">
+        <div className="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between hover:shadow-sm transition-all shadow-sm">
             <div className="flex items-center gap-4">
-                <div className={cn("w-2 h-10 rounded-full", colors[color])} />
+                <div className={cn("w-1.5 h-10 rounded-full", colors[color])} />
                 <div>
-                    <p className="text-sm font-bold text-slate-900">{name}</p>
-                    <p className="text-[10px] font-medium text-slate-400">{type}</p>
+                    <h4 className="text-base font-bold text-slate-900">{name}</h4>
+                    <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wider mt-0.5">{type}</p>
                 </div>
             </div>
             <div className="text-right">
                 <p className="text-sm font-black text-slate-900">{volume}</p>
-                <p className="text-[10px] font-black text-blue-600 uppercase tracking-tight">{status}</p>
+                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-0.5">{status}</p>
             </div>
         </div>
     );

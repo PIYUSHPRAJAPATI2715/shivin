@@ -1,121 +1,185 @@
 "use client";
 
-import { motion } from "motion/react";
-import { Building2, Users, TrendingUp, DollarSign, ArrowUpRight, PlusCircle, CheckCircle2, AlertCircle } from "lucide-react";
+import { useState } from "react";
+import { Search, Bell, Plus, MapPin, Edit3, Trash2, Home, TrendingUp, Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export function AgentDashboard() {
+    const [activeTab, setActiveTab] = useState("Active");
+
+    const tabs = ["Active", "Pending", "Closed"];
+
+    const stats = [
+        { label: "Total Properties", count: 200, icon: Home, color: "text-blue-600", bg: "bg-blue-100" },
+        { label: "Active Listings", count: 86, icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-100" },
+        { label: "Total Leads", count: 64, icon: Users, color: "text-orange-600", bg: "bg-orange-100" },
+        { label: "Upcoming Bookings", count: 4, icon: Calendar, color: "text-purple-600", bg: "bg-purple-100" }
+    ];
+
+    const properties = [
+        {
+            id: 1,
+            title: "Tamarind Ville",
+            location: "Noida Sector 82",
+            type: "Flats / Apartments",
+            price: "₹ 55 Lakh",
+            isActive: true,
+            status: "Active",
+            views: 1240,
+            leads: 12,
+            img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop"
+        },
+        {
+            id: 2,
+            title: "Supertech Cape Town",
+            location: "Noida Sector 74",
+            type: "Flats / Apartments",
+            price: "₹ 75 Lakh",
+            isActive: true,
+            status: "Active",
+            views: 890,
+            leads: 8,
+            img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop"
+        },
+        {
+            id: 3,
+            title: "Jaypee Greens",
+            location: "Noida Sector 128",
+            type: "Villas",
+            price: "₹ 1.2 Cr",
+            isActive: false,
+            status: "Pending",
+            views: 450,
+            leads: 2,
+            img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop"
+        }
+    ];
+
     return (
-        <div className="space-y-12">
-            {/* Portfolio Overview */}
-            <div className="flex flex-col md:flex-row gap-8 items-end justify-between">
+        <div className="max-w-7xl mx-auto space-y-8">
+            {/* Header Area */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                 <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-2">Operational Analytics</p>
-                    <h2 className="text-4xl font-bold text-slate-900 tracking-tight leading-none italic">PERFORMANCE <span className="not-italic text-blue-600">ALPHA</span></h2>
+                    <h2 className="text-2xl font-bold text-slate-900">Agent Performance</h2>
+                    <p className="text-slate-500 text-sm mt-1">Here is what's happening with your properties today.</p>
                 </div>
-                <Button className="h-14 px-8 bg-slate-900 text-white font-bold rounded-2xl shadow-xl flex items-center gap-3">
-                    <PlusCircle className="h-5 w-5" /> Initialize New Listing
-                </Button>
+                <div className="flex items-center gap-3">
+                    <Button variant="outline" className="gap-2 bg-white">
+                        <Bell className="w-4 h-4 text-slate-600" />
+                        Notifications
+                        <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1 font-bold">3</span>
+                    </Button>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-2">
+                        <Plus className="w-4 h-4" />
+                        Add New Property
+                    </Button>
+                </div>
             </div>
 
-            {/* Agent Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <AgentMetric icon={Building2} label="Inventory" value="24" trend="+3 this week" />
-                <AgentMetric icon={Users} label="Prospects" value="156" trend="+12% conversion" />
-                <AgentMetric icon={DollarSign} label="Pipeline" value="$18.4M" trend="High velocity" />
-                <AgentMetric icon={TrendingUp} label="Commission" value="$42.5K" trend="Paid: $38K" />
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                {/* Active Listings Grid */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="flex items-center justify-between px-4">
-                        <h3 className="text-xl font-bold text-slate-900">Portfolio Focus</h3>
-                        <Button variant="link" className="text-blue-600 text-xs font-bold font-display">View Global Inventory</Button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <ListingAssetCard title="Skyline View Penthouse" location="Lower Parel" status="Active" views="1.2k" />
-                        <ListingAssetCard title="Zen Garden Retreat" location="Bandra West" status="Pending" views="840" />
-                        <ListingAssetCard title="The Glass House" location="Juhu" status="Sold" views="4.5k" />
-                        <ListingAssetCard title="Industrial Loft" location="Wadala" status="Active" views="320" />
-                    </div>
-                </div>
-
-                {/* Immediate Compliance Tasks */}
-                <div className="space-y-8">
-                    <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-900/5 space-y-8">
-                        <h3 className="text-2xl font-bold text-slate-900 leading-tight">Priority <br /> <span className="text-rose-500">Action Required</span></h3>
-
-                        <div className="space-y-6">
-                            <TaskItem icon={AlertCircle} label="KYC Renewal" desc="Identity verification for Client #882 expires in 48h." color="text-rose-500" bg="bg-rose-50" />
-                            <TaskItem icon={CheckCircle2} label="Title Deed Sync" desc="Property listing #009 needs digital title attachment." color="text-blue-500" bg="bg-blue-50" />
-                            <TaskItem icon={AlertCircle} label="Lead Response" desc="3 premium inquiries pending for more than 4 hours." color="text-amber-500" bg="bg-amber-50" />
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {stats.map((stat, i) => (
+                    <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                        <div className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${stat.bg}`}>
+                            <stat.icon className={`w-6 h-6 ${stat.color}`} />
                         </div>
+                        <div>
+                            <p className="text-slate-500 text-sm font-medium">{stat.label}</p>
+                            <h3 className="text-2xl font-bold text-slate-900 mt-1">{stat.count}</h3>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
-                        <Button className="w-full h-14 bg-slate-50 text-slate-900 hover:bg-slate-100 rounded-2xl font-black uppercase tracking-widest text-[10px]">
-                            Batch Process Tasks
-                        </Button>
+            {/* Main Content Area */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                {/* Tabs & Search */}
+                <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex gap-2">
+                        {tabs.map(tab => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${activeTab === tab
+                                        ? "bg-slate-900 text-white shadow-md"
+                                        : "bg-slate-50 text-slate-600 hover:bg-slate-100"
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
                     </div>
 
-                    <div className="p-8 bg-blue-600 rounded-[2.5rem] text-white space-y-4">
-                        <p className="text-[10px] font-black uppercase tracking-widest opacity-60">Shiven Prime Status</p>
-                        <h4 className="text-xl font-bold leading-tight">Elite Agent status achieved. You have 4 referral slots open.</h4>
-                        <Button className="w-full h-12 bg-white/20 hover:bg-white/30 text-white rounded-xl text-xs font-bold border-none">Invite Associate</Button>
+                    <div className="relative w-full md:w-72">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                        <input
+                            type="text"
+                            placeholder="Search properties..."
+                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                        />
                     </div>
                 </div>
-            </div>
-        </div>
-    );
-}
 
-function AgentMetric({ icon: Icon, label, value, trend }: any) {
-    return (
-        <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-900/5">
-            <div className="flex items-center justify-between mb-6">
-                <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-800">
-                    <Icon className="h-5 w-5" />
-                </div>
-                <p className="text-[10px] font-black text-blue-600 uppercase tracking-tight">{trend}</p>
-            </div>
-            <p className="text-3xl font-black text-slate-900 mb-1">{value}</p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
-        </div>
-    );
-}
+                {/* Property Data Grid / List */}
+                <div className="p-6">
+                    <div className="grid grid-cols-1 gap-6">
+                        {properties.filter(p => activeTab === 'Active' ? p.isActive : !p.isActive).map((prop) => (
+                            <div key={prop.id} className="group flex flex-col md:flex-row gap-6 p-4 rounded-xl border border-slate-100 hover:border-blue-100 hover:bg-blue-50/30 transition-all">
+                                {/* Thumbnail */}
+                                <div className="w-full md:w-64 h-48 md:h-auto shrink-0 rounded-lg overflow-hidden relative">
+                                    <img src={prop.img} alt={prop.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    <div className={`absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-bold text-white shadow-sm ${prop.isActive ? 'bg-emerald-500' : 'bg-amber-500'
+                                        }`}>
+                                        {prop.status.toUpperCase()}
+                                    </div>
+                                </div>
 
-function ListingAssetCard({ title, location, status, views }: any) {
-    return (
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 group hover:shadow-2xl hover:shadow-slate-900/5 transition-all">
-            <div className="flex items-center justify-between mb-4">
-                <div className={cn(
-                    "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
-                    status === "Active" ? "bg-green-50 text-green-600" :
-                        status === "Pending" ? "bg-amber-50 text-amber-600" :
-                            "bg-blue-50 text-blue-600"
-                )}>
-                    {status}
-                </div>
-                <div className="flex items-center gap-1 text-slate-300 text-[10px] font-bold">
-                    <TrendingUp className="h-3 w-3" /> {views}
-                </div>
-            </div>
-            <h4 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">{title}</h4>
-            <p className="text-xs text-slate-400 font-medium">{location}</p>
-        </div>
-    );
-}
+                                {/* Details */}
+                                <div className="flex-1 flex flex-col pt-1">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{prop.title}</h3>
+                                            <p className="text-blue-600 font-semibold text-sm mt-1">{prop.type}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className="text-2xl font-bold text-slate-900">{prop.price}</span>
+                                        </div>
+                                    </div>
 
-function TaskItem({ icon: Icon, label, desc, color, bg }: any) {
-    return (
-        <div className="flex items-start gap-4">
-            <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0", bg, color)}>
-                <Icon className="h-5 w-5" />
-            </div>
-            <div className="space-y-1">
-                <p className="text-sm font-bold text-slate-900 leading-none">{label}</p>
-                <p className="text-xs text-slate-400 font-medium leading-relaxed">{desc}</p>
+                                    <div className="flex items-center gap-2 mb-6">
+                                        <MapPin className="w-4 h-4 text-slate-400" />
+                                        <span className="text-sm text-slate-500">{prop.location}</span>
+                                    </div>
+
+                                    {/* Stats & Actions */}
+                                    <div className="mt-auto flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                                        <div className="flex items-center gap-6">
+                                            <div>
+                                                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Views</p>
+                                                <p className="font-semibold text-slate-900">{prop.views}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Active Leads</p>
+                                                <p className="font-semibold text-slate-900">{prop.leads}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3">
+                                            <Button variant="outline" size="sm" className="gap-2 border-slate-200">
+                                                <Edit3 className="w-4 h-4 text-slate-600" />
+                                                Edit
+                                            </Button>
+                                            <Button variant="outline" size="sm" className="gap-2 border-slate-200 text-red-600 hover:text-red-700 hover:bg-red-50">
+                                                <Trash2 className="w-4 h-4" />
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );
